@@ -1,5 +1,6 @@
 package expo.modules.notifications.notifications;
 
+import android.graphics.Color;
 import android.net.Uri;
 import android.util.Log;
 
@@ -23,6 +24,7 @@ public class ArgumentsNotificationContentBuilder extends NotificationContent.Bui
   private static final String VIBRATE_KEY = "vibrate";
   private static final String PRIORITY_KEY = "priority";
   private static final String BADGE_KEY = "badge";
+  private static final String COLOR_KEY = "color";
 
   public ArgumentsNotificationContentBuilder() {
   }
@@ -33,7 +35,8 @@ public class ArgumentsNotificationContentBuilder extends NotificationContent.Bui
         .setText(payload.getString(TEXT_KEY))
         .setBody(getBody(payload))
         .setPriority(getPriority(payload))
-        .setBadgeCount(getBadgeCount(payload));
+        .setBadgeCount(getBadgeCount(payload))
+        .setColor(getColor(payload));
     if (shouldPlayDefaultSound(payload)) {
       useDefaultSound();
     } else {
@@ -50,6 +53,15 @@ public class ArgumentsNotificationContentBuilder extends NotificationContent.Bui
 
   protected Number getBadgeCount(ReadableArguments payload) {
     return payload.containsKey(BADGE_KEY) ? payload.getInt(BADGE_KEY) : null;
+  }
+
+  protected Number getColor(ReadableArguments payload) {
+    try {
+      return payload.containsKey(COLOR_KEY) ? Color.parseColor(payload.getString(COLOR_KEY)) : null;
+    } catch (IllegalArgumentException e) {
+      Log.e("expo-notifications", "Could not have parsed color passed in notification.");
+      return null;
+    }
   }
 
   protected boolean shouldPlayDefaultSound(ReadableArguments payload) {
