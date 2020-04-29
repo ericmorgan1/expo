@@ -14,6 +14,10 @@ commands:
         type: string
     steps:
       - run:
+          name: Set CI_REQUIRED_PATHS
+          command:
+              echo 'export CI_REQUIRED_PATHS=(.circleci/config.yml bin << parameters.paths >>)' >> $BASH_ENV
+      - run:
           name: Skip job if no relevant changes since last successful build on branch
           command: |
             export GIT_PAGER=cat # Prevents git commands hanging on mac executors
@@ -43,15 +47,20 @@ commands:
                 exit 0
               fi
 
-              echo "Checking for changes since $GIT_BASE_REVISION touching circle config or << parameters.paths >>:"
+              echo "Checking for changes since $GIT_BASE_REVISION touching $CI_REQUIRED_PATHS:"
 
-              if git log --name-status --exit-code --format=oneline "$GIT_BASE_REVISION..$CIRCLE_SHA1" -- .circleci/config.yml << parameters.paths >>; then
+              if git log --name-status --exit-code --format=oneline "$GIT_BASE_REVISION..$CIRCLE_SHA1" -- "${CI_REQUIRED_PATHS[@]}"; then
                 echo "No changes found in watched paths.  Ending job."
                 circleci-agent step halt
               else
                 echo "Changes found in watched paths.  Continuing the job."
               fi
             fi
+      - run:
+          name: Delete all files not listed as dependencies
+          command: |
+            export submodules=$(git submodule | sed 's/^.* //' | xargs echo -n)
+            git ls-files -z | grep --null-data --invert-match "^${CI_REQUIRED_PATHS// /\\|^}" | xargs -0 -L 20 rm
   install_yarn:
     steps:
       - run: curl -sL https://deb.nodesource.com/setup_10.x | sudo bash -
