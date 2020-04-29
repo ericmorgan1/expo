@@ -1,3 +1,7 @@
 #!/usr/bin/env bash
 
-git ls-files | grep --null --invert-match "^${@// /\\|^}" | xargs -0 -n 20 rm
+set -euo pipefail
+
+KEEP="${@}"
+
+git ls-files | grep --null --invert-match "^${KEEP// /\\|^}" | xargs -0 -I {} rm -v {}
