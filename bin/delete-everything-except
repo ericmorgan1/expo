@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+git ls-files | grep --null --invert-match "^${@// /\\|^}" | xargs -0 -n 20 rm
