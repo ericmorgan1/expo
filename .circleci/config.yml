@@ -536,7 +536,7 @@ jobs:
       - setup
       - skip_unless_changed:
           workflow_name: client
-          paths: tools/expotools ios fastlane Gemfile .ruby-version
+          paths: tools/expotools secrets ios fastlane Gemfile .ruby-version
       - update_submodules
       - git_lfs_pull
       - decrypt_secrets_if_possible
@@ -703,7 +703,7 @@ jobs:
       - setup
       - skip_unless_changed:
           workflow_name: client
-          paths: android fastlane tools-public Gemfile .ruby-version yarn.lock
+          paths: secrets android fastlane tools-public Gemfile .ruby-version yarn.lock
       - update_submodules
       - install_yarn
       - yarn_install:
