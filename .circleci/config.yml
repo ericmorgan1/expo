@@ -47,7 +47,7 @@ commands:
                 exit 0
               fi
 
-              echo "Checking for changes since $GIT_BASE_REVISION touching $CI_REQUIRED_PATHS:"
+              echo "Checking for changes since $GIT_BASE_REVISION touching ${CI_REQUIRED_PATHS[@]}:"
 
               if git log --name-status --exit-code --format=oneline "$GIT_BASE_REVISION..$CIRCLE_SHA1" -- "${CI_REQUIRED_PATHS[@]}"; then
                 echo "No changes found in watched paths.  Ending job."
@@ -57,7 +57,7 @@ commands:
               fi
             fi
       - run:
-          command: bin/delete-everything-except "${CI_REQUIRED_PATHS}" "$(git submodule | sed 's/^.* //' | xargs echo -n)"
+          command: bin/delete-everything-except "${CI_REQUIRED_PATHS[@]}" "$(git submodule | sed 's/^.* //' | xargs echo -n)"
   install_yarn:
     steps:
       - run: curl -sL https://deb.nodesource.com/setup_10.x | sudo bash -
