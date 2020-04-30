@@ -3,5 +3,8 @@
 set -euo pipefail
 
 KEEP="${@}"
+PATTERN="^${KEEP// /\\|^}"
 
-git ls-files | grep --invert-match "^${KEEP// /\\|^}" | tr '\n' '\000' | xargs -0 rm -v 
+echo "deleting files whose paths do not match '$PATTERN'"
+
+git ls-files | grep --invert-match "${PATTERN}" | tr '\n' '\000' | xargs -0 rm

@@ -57,7 +57,7 @@ commands:
               fi
             fi
       - run:
-          command: bin/delete-everything-except ${CI_REQUIRED_PATHS} $(git submodule | sed 's/^.* //' | xargs echo -n)
+          command: bin/delete-everything-except "${CI_REQUIRED_PATHS}" "$(git submodule | sed 's/^.* //' | xargs echo -n)"
   install_yarn:
     steps:
       - run: curl -sL https://deb.nodesource.com/setup_10.x | sudo bash -
