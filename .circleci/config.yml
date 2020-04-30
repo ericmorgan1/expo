@@ -393,7 +393,7 @@ jobs:
       - setup
       - skip_unless_changed:
           workflow_name: sdk
-          paths: yarn.lock packages
+          paths: yarn.lock packages tools/expotools
       - update_submodules
       - restore_yarn_cache
       - yarn_install:
