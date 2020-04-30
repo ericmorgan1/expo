@@ -478,7 +478,7 @@ jobs:
       - setup
       - skip_unless_changed:
           workflow_name: sdk
-          paths: apps/bare-expo apps/test-suite yarn.lock packages Gemfile.lock
+          paths: apps/bare-expo apps/test-suite yarn.lock packages Gemfile .ruby-version
       - bundle_install
       - update_submodules
 
@@ -536,7 +536,7 @@ jobs:
       - setup
       - skip_unless_changed:
           workflow_name: client
-          paths: tools/expotools ios fastlane Gemfile.lock
+          paths: tools/expotools ios fastlane Gemfile .ruby-version
       - update_submodules
       - git_lfs_pull
       - decrypt_secrets_if_possible
@@ -703,7 +703,7 @@ jobs:
       - setup
       - skip_unless_changed:
           workflow_name: client
-          paths: android fastlane tools-public Gemfile.lock yarn.lock
+          paths: android fastlane tools-public Gemfile .ruby-version yarn.lock
       - update_submodules
       - install_yarn
       - yarn_install:
@@ -737,7 +737,7 @@ jobs:
       - setup
       - skip_unless_changed:
           workflow_name: client
-          paths: android fastlane tools/expotools Gemfile.lock yarn.lock
+          paths: android fastlane tools/expotools Gemfile .ruby-version yarn.lock
       - install_yarn
       - update_submodules
       - restore_yarn_cache
